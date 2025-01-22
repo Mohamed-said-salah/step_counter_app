@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,16 +55,20 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
 
     _stepCountStream = Pedometer.stepCountStream;
 
-    _requestPermission();
+    // Platform-specific permission handling
+    if (Platform.isAndroid) {
+      _requestAndroidPermission();
+    } else {
+      // On iOS, no explicit permission request is needed
+      setState(() {
+        _permissionGranted = true;
+      });
+    }
   }
 
-  /// Requests the activity recognition permission.
-  ///
-  /// This function is called when the state is initialized. It requests
-  /// the permission and updates the state with the result.
-  Future<void> _requestPermission() async {
+  /// Requests the activity recognition permission (Android only).
+  Future<void> _requestAndroidPermission() async {
     final status = await Permission.activityRecognition.request();
-
     setState(() {
       _permissionGranted = status == PermissionStatus.granted;
     });
