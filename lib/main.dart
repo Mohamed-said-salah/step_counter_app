@@ -10,6 +10,18 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
+
+  /// Build the main application widget.
+  ///
+  /// This widget contains a [MaterialApp] that, in turn, contains a
+  /// [StepCountingScreen].
+  ///
+  /// The [MaterialApp] is the root widget of the application. It's used
+  /// to configure the top-level routing, theming, and many other options.
+  ///
+  /// The [StepCountingScreen] is the home screen of the application. It
+  /// displays the current step count and allows the user to request
+  /// permissions to access the step counter.
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: StepCountingScreen(),
@@ -30,6 +42,12 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
   bool _permissionGranted = false;
 
   @override
+
+  /// Initializes the state of the step counting screen.
+  ///
+  /// Sets up the step count stream from the pedometer and requests
+  /// the necessary activity recognition permission.
+
   void initState() {
     super.initState();
 
@@ -38,6 +56,10 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
     _requestPermission();
   }
 
+  /// Requests the activity recognition permission.
+  ///
+  /// This function is called when the state is initialized. It requests
+  /// the permission and updates the state with the result.
   Future<void> _requestPermission() async {
     final status = await Permission.activityRecognition.request();
 
@@ -47,6 +69,13 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
   }
 
   @override
+
+  /// Builds the widget tree for the step counting screen.
+  ///
+  /// This widget displays the title "Step Counter" in the app bar and
+  /// displays the current step count in the body of the screen. If the
+  /// permission to count steps has not been granted, it displays a message
+  /// asking for the permission instead.
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
