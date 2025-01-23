@@ -53,12 +53,12 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
   void initState() {
     super.initState();
 
-    _stepCountStream = Pedometer.stepCountStream;
-
     // Platform-specific permission handling
     if (Platform.isAndroid) {
       _requestAndroidPermission();
     } else {
+      _stepCountStream = Pedometer.stepCountStream;
+
       // On iOS, no explicit permission request is needed
       setState(() {
         _permissionGranted = true;
@@ -69,6 +69,7 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
   /// Requests the activity recognition permission (Android only).
   Future<void> _requestAndroidPermission() async {
     final status = await Permission.activityRecognition.request();
+
     setState(() {
       _permissionGranted = status == PermissionStatus.granted;
     });
@@ -90,7 +91,7 @@ class _StepCountingScreenState extends State<StepCountingScreen> {
       body: Center(
         child: _permissionGranted
             ? StreamBuilder<StepCount>(
-                stream: _stepCountStream,
+                stream: Pedometer.stepCountStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text(
